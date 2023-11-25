@@ -9,11 +9,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
     public static final int PERMISSION_WRITE = 0;
+    private static final String TAG = "YoutubeDownloader";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,8 @@ public class MainActivity extends Activity {
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 Intent serviceIntent = new Intent(this, DownloadService.class);
-                serviceIntent.putExtra(Intent.EXTRA_TEXT, intent.getStringExtra(Intent.EXTRA_TEXT));
+                String videoUrl = intent.getStringExtra(Intent.EXTRA_TEXT);
+                serviceIntent.putExtra(Intent.EXTRA_TEXT, videoUrl);
                 //ContextCompat.startForegroundService(this, serviceIntent);
                 startService(serviceIntent);
                 finish();
